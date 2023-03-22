@@ -1,9 +1,9 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-const galleryContainer = document.querySelector('.gallery'); 
+const gallery = document.querySelector('.gallery'); 
  
-function generateGalleryMarkup(galleryItems) { 
+function createGallery(galleryItems) { 
   return galleryItems 
     .map(({ preview, original, description }) => ` 
       <li class="gallery__item"> 
@@ -11,7 +11,7 @@ function generateGalleryMarkup(galleryItems) {
           <img 
             class="gallery__image" 
             src="${preview}" 
-            data-original="${original}" 
+            data-full-image-url="${original}" 
             alt="${description}" 
           /> 
         </a> 
@@ -22,14 +22,14 @@ function generateGalleryMarkup(galleryItems) {
  
 function openFullSizeImage(event) { 
   event.preventDefault(); 
-   
-  const targetElement = event.target; 
-   
-  if (targetElement.tagName !== 'IMG') return; 
-   
-  const fullSizeImageSource = targetElement.dataset.original; 
  
-  const instance = basicLightbox.create(`<img src="${fullSizeImageSource}">`); 
+  const target = event.target; 
+ 
+  if (target.tagName !== 'IMG') return; 
+ 
+  const fullSizeImageUrl = target.dataset.fullImageUrl; 
+ 
+  const instance = basicLightbox.create(`<img src="${fullSizeImageUrl}">`); 
   instance.show(); 
  
   document.addEventListener('keydown', closeOnEscapePress); 
@@ -42,12 +42,13 @@ function openFullSizeImage(event) {
   } 
 } 
  
-function initializeGallery(galleryContainer, galleryItems) { 
-  galleryContainer.insertAdjacentHTML( 
+function initializeGallery(gallery, galleryItems) { 
+  gallery.insertAdjacentHTML( 
     'beforeend', 
-    generateGalleryMarkup(galleryItems) 
+    createGallery(galleryItems) 
   ); 
-  galleryContainer.addEventListener('click', openFullSizeImage); 
+ 
+  gallery.addEventListener('click', openFullSizeImage); 
 } 
  
-initializeGallery(galleryContainer, galleryItems);
+initializeGallery(gallery, galleryItems);
